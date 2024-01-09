@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../services/auth";
+import WeekViewContainer from "../components/mainView/WeekViewContainer";
 
 function Home() {
   const [auth, setAuth] = useState(false);
@@ -32,8 +33,11 @@ function Home() {
     <div>
       {auth ? (
         <div>
+          <div>
           <h3>You are authorized as {name}</h3>
           <button onClick={handleLogout}>Logout</button>
+          </div>
+          <WeekViewContainer />
         </div>
       ) : (
         <div>
