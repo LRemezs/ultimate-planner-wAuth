@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../services/auth";
 
-function Register() {
+const Register = () => {
   const navigate = useNavigate();
 
   const [values, setValues] = useState({

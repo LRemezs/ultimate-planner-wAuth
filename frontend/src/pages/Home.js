@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../services/auth";
 import WeekViewContainer from "../components/mainView/WeekViewContainer";
 
-function Home() {
+const Home = () => {
   const [auth, setAuth] = useState(false);
   const [name, setName] = useState('');
   const navigate = useNavigate();

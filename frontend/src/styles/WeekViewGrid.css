@@ -1,0 +1,19 @@
+.week-grid {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.week-grid th,
+.week-grid td {
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.week-grid th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+.week-grid td {
+  text-align: center;
+}
