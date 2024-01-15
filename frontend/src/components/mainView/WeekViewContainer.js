@@ -3,8 +3,9 @@ import WeekViewGrid from './WeekViewGrid';
 import { addWeeks, subWeeks } from 'date-fns';
 import '../../styles/WeekViewContainer.css';
 
-const initialOneOffEvents = [
+const initialEvents = [
   {
+    // test OneOffEvents
     title: 'Event 1',
     startTime: new Date('2024-01-15T10:00:00'),
     endTime: new Date('2024-01-15T12:00:00'),
@@ -36,40 +37,39 @@ const initialOneOffEvents = [
     location: 'Location 4',
     type: 'oneOff'
   },
-  // Add more events as needed
-];
-
-const initialRoutineEvents = [
   {
-    title: 'Routine Event',
-    startHour: 1,
-    endHour: 3,
-    startTime: new Date('2024-01-01T01:00:00'),
-    endTime: new Date('2024-01-01T03:00:00'),
-    description: 'Routine event description',
-    location: 'Routine Location',
-    type: 'routine',
-    repeat: {
-      weekdays: [1, 3, 5], // Repeat on Monday, Wednesday, and Friday
-    },
+    title: 'Event 5',
+    startTime: new Date('2024-01-22T17:00:00'),
+    endTime: new Date('2024-01-22T20:00:00'),
+    description: 'Event 5 description',
+    location: 'Location 5',
+    type: 'oneOff'
+  },
+  // Test Routine Events
+  {
+    title: 'Routine Event 1',
+    startTime: new Date('2024-01-15T04:00:00'),
+    endTime: new Date('2024-01-15T06:00:00'),
+    description: 'Event 1 description',
+    location: 'Location 1',
+    type: 'repeating',
+    id: 'workout',
+    repeatOnDays: [1, 3, 0]  // Repeats every Tuesday, Thursday, Saturday and Sunday
   },
   {
     title: 'Routine Event 2',
-    startHour: 4,
-    endHour: 7,
-    description: 'Routine event 2 description',
-    location: 'Routine 2 Location',
-    type: 'routine',
-    startTime: new Date('2024-01-01T04:00:00'),
-    endTime: new Date('2024-01-01T06:00:00'),
-    repeat: {
-      weekdays: [0, 1, 2, 3, 4, 5, 6], // Repeat on Monday, Wednesday, and Friday
-    },
+    startTime: new Date('2024-01-15T10:00:00'),
+    endTime: new Date('2024-01-15T11:00:00'),
+    description: 'Event 2 description',
+    location: 'Location 2',
+    type: 'repeating',
+    id: 'sleep', // test for routine options in future
+    repeatOnDays: [1, 2, 4] // Repeats every Tuesday and Thursday
   },
-  // Add more routine events as needed
 ];
 
-const WeekViewContainer = () => {
+
+const WeekViewContainer = (userId) => {
   const [currentWeekStartDate, setCurrentWeekStartDate] = useState(new Date());
 
   const handleNextWeek = () => {
@@ -87,9 +87,9 @@ const WeekViewContainer = () => {
       <WeekViewGrid
         startDate={currentWeekStartDate}
         events={{
-          oneOffEvents: initialOneOffEvents,
-          routineEvents: initialRoutineEvents,
+          events: initialEvents,
         }}
+        userId={userId}
       />
     </div>
   );

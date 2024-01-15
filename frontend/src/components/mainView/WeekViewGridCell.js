@@ -1,22 +1,26 @@
 import React from "react";
-import OneOffEvent from "./OneOffEvent";
-import RoutineEvent from "./RoutineEvent";
+import EventBlock from "./EventBlock";
 
-const WeekViewGridCell = ({ columnIndex, hour, events, weekDates, isEventInCell, isRoutineEventInCell }) => {
-  const oneOffEvent = events.oneOffEvents.find((event) => isEventInCell(event, hour, columnIndex));
-  const routineEvent = events.routineEvents.find((event) => isRoutineEventInCell(event, hour, columnIndex));
+const WeekViewGridCell = ({ columnIndex, hour, events, weekDates, isEventInCell, userId }) => {
+  // Filter events for this cell
+  const eventsForCell = events.events.filter(event => isEventInCell(event, hour, columnIndex, weekDates));
 
-  
+  // Check if there is at least one one-time event
+  const hasOneOffEvent = eventsForCell.some(event => event.type === 'oneOff');
 
-  if (oneOffEvent) {
-    return <OneOffEvent key={`oneOff_${columnIndex}`} event={oneOffEvent} columnIndex={columnIndex} hour={hour} />;
+  // If there is a one-time event, filter out all repeating events
+  const filteredEvents = hasOneOffEvent ? eventsForCell.filter(event => event.type === 'oneOff') : eventsForCell;
+
+  if (filteredEvents.length > 0) {
+    return (
+      <>
+        {filteredEvents.map((event, index) => (
+          <EventBlock key={`event_${columnIndex}_${index}`} event={event} columnIndex={columnIndex} hour={hour} userId={userId}/>
+        ))}
+      </>
+    );
   }
-  
-  if (routineEvent) {
-    return <RoutineEvent key={`routine_${columnIndex}`} event={routineEvent} columnIndex={columnIndex} hour={hour} />;
-  }
 
-  // Render empty cell if no events in the cell
   return <td key={columnIndex}></td>;
 };
 

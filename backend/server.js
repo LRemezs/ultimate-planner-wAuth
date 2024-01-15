@@ -14,7 +14,7 @@ app.use(cors({
 app.use(cookieParser());
 
 app.get('/auth', verifyUser, (req, res) => {
-  return res.json({ Status: 'Success', name: req.name });
+  return res.json({ Status: 'Success', name: req.name, id: req.id });
 });
 
 app.use('/', routes);

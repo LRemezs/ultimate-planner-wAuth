@@ -8,22 +8,24 @@ export const generateWeekDates = (startDate) => (
 );
 
 export const isEventInCell = (event, hour, dayIndex, weekDates) => {
+  const cellDate = new Date(weekDates[dayIndex].currentDate);
+  cellDate.setHours(hour, 0, 0, 0);
+  const cellEndTime = new Date(cellDate);
+  cellEndTime.setHours(hour + 1, 0, 0, 0);
 
-  const cellStartTime = new Date(weekDates[dayIndex].currentDate).setHours(hour);
-  const cellEndTime = new Date(weekDates[dayIndex].currentDate).setHours(hour);
+  const dayOfWeek = cellDate.getDay(); 
 
-  return (
-    event.startTime < cellEndTime &&
-    event.endTime >= cellStartTime
-  );
-};
+  const isOneOffEvent = event.type === 'oneOff';
+  const isRepeatingEvent = event.type === 'repeating';
 
-export const isRoutineEventInCell = (event, hour, columnIndex) => {
-  if (event.type === 'routine') {
-    const weekdays = event.repeat.weekdays;
-    const isApplicableDay = weekdays.includes(columnIndex);
-    const isStartingCell = isApplicableDay && hour === event.startHour;
-    return isStartingCell;
-  }
-  return false;
+  const matchesOneOffEvent = isOneOffEvent && 
+                              event.startTime < cellEndTime &&
+                              event.endTime > cellDate;
+
+  const matchesRepeatingEvent = isRepeatingEvent && 
+                                event.repeatOnDays.includes(dayOfWeek) &&
+                                event.startTime.getHours() <= hour &&
+                                event.endTime.getHours() > hour;
+
+  return matchesOneOffEvent || matchesRepeatingEvent;
 };

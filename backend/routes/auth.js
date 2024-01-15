@@ -40,14 +40,16 @@ router.post('/login', (req, res) => {
         }
 
         if (response) {
+          const id = data[0].id;
           const name = data[0].name;
-          const token = jwt.sign({name}, process.env.JWT_SECRET_KEY, {expiresIn: '1d'});
+          const token = jwt.sign({name, id}, process.env.JWT_SECRET_KEY, {expiresIn: '1d'});
           res.cookie('token', token, {
             httpOnly: true,
             sameSite: 'strict',
             // secure: true, // Uncomment in production when using HTTPS
           });
-          return res.json({ Status: "Success" });
+          console.log({ Status: "Success", name, id });
+          return res.json({ Status: "Success", name, id });
         } else {
           return res.json({ Error: "Password didn't match" });
         }

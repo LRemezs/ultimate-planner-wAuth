@@ -6,14 +6,17 @@ import WeekViewContainer from "../components/mainView/WeekViewContainer";
 const Home = () => {
   const [auth, setAuth] = useState(false);
   const [name, setName] = useState('');
+  const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
-
+  
+  
   useEffect(() => {
     AuthService.checkAuth()
       .then(res => {
         if (res.data.Status === "Success") {
           setAuth(true);
           setName(res.data.name);
+          setUserId(res.data.id); // Make sure this line correctly sets the ID
         } else {
           setAuth(false);
         }
@@ -29,6 +32,7 @@ const Home = () => {
       .catch(err => console.log(err));
   };
 
+  
   return (
     <div>
       {auth ? (
@@ -37,7 +41,7 @@ const Home = () => {
           <h3>You are authorized as {name}</h3>
           <button onClick={handleLogout}>Logout</button>
           </div>
-          <WeekViewContainer />
+          <WeekViewContainer userId={userId} />
         </div>
       ) : (
         <div>

@@ -1,8 +1,8 @@
 import React from "react";
 import WeekViewGridCell from './WeekViewGridCell';
-import { isEventInCell, isRoutineEventInCell } from './dateHelpers';
+import { isEventInCell } from './dateHelpers';
 
-const WeekViewGridBody = ({ hoursOfDay, weekDates, events }) => (
+const WeekViewGridBody = ({ hoursOfDay, weekDates, events, userId }) => (
   <tbody>
     {hoursOfDay.map((hour, rowIndex) => (
       <tr key={hour}>
@@ -15,7 +15,7 @@ const WeekViewGridBody = ({ hoursOfDay, weekDates, events }) => (
             weekDates={weekDates}
             events={events}
             isEventInCell={(event) => isEventInCell(event, hour, columnIndex, weekDates)}
-            isRoutineEventInCell={(event) => isRoutineEventInCell(event, hour, columnIndex, weekDates)}
+            userId={userId}
           />
         ))}
       </tr>
