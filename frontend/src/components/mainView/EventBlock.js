@@ -2,12 +2,22 @@ import React from "react";
 import { Link } from 'react-router-dom';
 
 const EventBlock = ({ event, columnIndex, hour, userId }) => {
-  const startHour = event.startTime.getHours();
-  const endHour = event.endTime.getHours();
+  const eventStartTime = new Date(event.start_time);
+  const eventEndTime = new Date(event.end_time);
+
+  const startHour = eventStartTime.getHours();
+  const endHour = eventEndTime.getHours();
+  const adjustedEndHour = endHour === 0 ? 24 : endHour;
   const isStartingCell = hour === startHour;
-  const rowSpan = endHour - startHour;
+  const rowSpan = adjustedEndHour - startHour;
   const isRoutineEvent = event.type === 'repeating'; 
   const eventDetailsUrl = `/events/${event.id}/user/${userId.userId}`;
+
+  // Function to format time
+  const formatTime = (time) => {
+    return new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: 'numeric', hour12: false }).format(new Date(time));
+};
+  
 
   if (isStartingCell) {
     return (
@@ -15,7 +25,7 @@ const EventBlock = ({ event, columnIndex, hour, userId }) => {
         <div>
           <strong>{event.title}</strong>
           <br />
-          {new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: 'numeric', hour12: false }).format(event.startTime)}
+          {startHour === 0 ? `${formatTime(event.end_time)}` : `${formatTime(event.start_time)}`}
           <br />
           {event.description && (
             isRoutineEvent ?

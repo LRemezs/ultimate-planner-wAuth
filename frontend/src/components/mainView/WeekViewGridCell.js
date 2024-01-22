@@ -3,7 +3,7 @@ import EventBlock from "./EventBlock";
 
 const WeekViewGridCell = ({ columnIndex, hour, events, weekDates, isEventInCell, userId }) => {
   // Filter events for this cell
-  const eventsForCell = events.events.filter(event => isEventInCell(event, hour, columnIndex, weekDates));
+  const eventsForCell = events.filter(event => isEventInCell(event, hour, columnIndex, weekDates));
 
   // Check if there is at least one one-time event
   const hasOneOffEvent = eventsForCell.some(event => event.type === 'oneOff');

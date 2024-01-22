@@ -4,7 +4,7 @@ import { isEventInCell } from './dateHelpers';
 
 const WeekViewGridBody = ({ hoursOfDay, weekDates, events, userId }) => (
   <tbody>
-    {hoursOfDay.map((hour, rowIndex) => (
+    {hoursOfDay.map((hour) => (
       <tr key={hour}>
         <td>{`${hour}:00`}</td>
         {weekDates.map((day, columnIndex) => (

@@ -1,8 +1,11 @@
 import express from "express";
 import authRoutes from './auth.js';
+import eventRoutes from './events.js';
 
-const router = express.Router();
+const app = express.Router();
 
-router.use('/auth', authRoutes);
+app.use('/auth', authRoutes);
+app.use('/events', eventRoutes);
 
-export default router;
+
+export default app;
