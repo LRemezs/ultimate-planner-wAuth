@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../services/auth";
-import WeekViewContainer from "../components/mainView/WeekViewContainer";
+import WeekViewContainer from "../components/week_view/WeekViewContainer";
 
 const Home = () => {
   const [auth, setAuth] = useState(false);

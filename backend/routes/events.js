@@ -6,13 +6,13 @@ const router = express.Router();
 
 // POST route for creating an event
 router.post('/add', verifyUser, (req, res) => {
-  const { user_id, title, start_time, end_time, description, location, type, repeat_on_days } = req.body;
-  const sql = "INSERT INTO events (user_id, title, start_time, end_time, description, location, type, repeat_on_days) VALUES (?)";
-  const values = [user_id, title, start_time, end_time, description, location, type, repeat_on_days];
+  const { user_id, title, start_time, end_time, description, location, type } = req.body;
+  const sql = "INSERT INTO events (user_id, title, start_time, end_time, description, location, type) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-  db.query(sql, [values], (err, result) => {
+  db.query(sql, [user_id, title, start_time, end_time, description, location, type], (err, result) => {
     if (err) {
-      return res.status(500).json({ Error: "Error adding event" });
+      console.error(err); // Log the full error
+      return res.status(500).json({ Error: "Error adding event", Details: err.message });
     }
     return res.json({ Status: "Success", EventId: result.insertId });
   });
@@ -21,24 +21,29 @@ router.post('/add', verifyUser, (req, res) => {
 // GET route for retrieving events
 router.get('/list', verifyUser, (req, res) => {
   const user_id = parseInt(req.query.user_id);
-  const sql = 'SELECT * FROM events WHERE user_id = ?';
+  const start_date = new Date(req.query.start_date); 
+  const end_date = new Date(req.query.end_date); 
+  console.log(start_date, end_date);
 
-  db.query(sql, [user_id], (err, result) => {
+  const sql = 'SELECT * FROM events WHERE user_id = ? AND start_time >= ? AND end_time <= ?';
+
+  db.query(sql, [user_id, start_date, end_date], (err, result) => {
     if (err) {
       return res.status(500).json({ Error: "Error fetching events" });
     }
-    console.log({ Status: "Success", user_id, events: result});
-    return res.json({ Status: "Success", events: result}); 
+    console.log({ Status: "Success", user_id, events: result });
+    return res.json({ Status: "Success", events: result });
   });
 });
 
-router.delete('/remove/:event_id', verifyUser, (req, res) => {
-  const user_id =  req.user.id;
+// DELETE route for removing events
+
+router.delete('/remove/:event_id', (req, res) => {
   const { event_id } = req.params;
 
-  const sql = "DELETE FROM events WHERE event_id = ? AND user_id = ?";
+  const sql = "DELETE FROM events WHERE event_id = ?";
 
-  db.query(sql, [event_id, user_id], (err, result) => {
+  db.query(sql, [event_id], (err, result) => {
     if (err) {
       return res.status(500).json({ Error: "Error removing event"});
     }

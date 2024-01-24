@@ -1,5 +1,5 @@
 import React from "react";
-import { generateWeekDates } from './dateHelpers';
+import { generateWeekDates } from '../one_off_events/dateHelpers';
 
 const WeekViewGridHeader = ({ daysOfWeek, startDate }) => {
   const weekDates = generateWeekDates(startDate);

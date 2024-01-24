@@ -7,16 +7,14 @@ export const generateWeekDates = (startDate) => (
   })
 );
 
-export const isEventInCell = (event, hour, dayIndex, weekDates) => {
+export const isEventInCell = (event, timeSlot, dayIndex, weekDates) => {
+  const [hour, minutes] = timeSlot.split(':').map(Number);
   const cellDate = new Date(weekDates[dayIndex].currentDate);
-  cellDate.setHours(hour, 0, 0, 0);
+  cellDate.setHours(hour, minutes, 0, 0);
   const cellEndTime = new Date(cellDate);
-  cellEndTime.setHours(hour + 1, 0, 0, 0);
-
-  const dayOfWeek = cellDate.getDay(); 
+  cellEndTime.setMinutes(cellDate.getMinutes() + 15); 
 
   const isOneOffEvent = event.type === 'oneOff';
-  const isRepeatingEvent = event.type === 'repeating';
 
   const eventStartTime = new Date(event.start_time);
   let eventEndTime = new Date(event.end_time);
@@ -30,11 +28,5 @@ export const isEventInCell = (event, hour, dayIndex, weekDates) => {
                               eventStartTime < cellEndTime &&
                               eventEndTime > cellDate;
 
-  const matchesRepeatingEvent = isRepeatingEvent && 
-                                event.repeat_on_days && 
-                                event.repeat_on_days.includes(dayOfWeek) &&
-                                eventStartTime.getHours() <= hour &&
-                                (eventEndTime.getHours() > hour || (eventEndTime.getHours() === 0 && hour < 24));
-
-  return matchesOneOffEvent || matchesRepeatingEvent;
+  return matchesOneOffEvent;
 };

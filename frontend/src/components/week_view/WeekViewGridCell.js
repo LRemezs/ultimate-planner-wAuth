@@ -1,9 +1,10 @@
 import React from "react";
-import EventBlock from "./EventBlock";
+import EventBlock from "../one_off_events/EventBlock";
 
-const WeekViewGridCell = ({ columnIndex, hour, events, weekDates, isEventInCell, userId }) => {
+
+const WeekViewGridCell = ({ columnIndex, timeSlot, events, weekDates, isEventInCell, userId, onEventDeleted }) => {
   // Filter events for this cell
-  const eventsForCell = events.filter(event => isEventInCell(event, hour, columnIndex, weekDates));
+  const eventsForCell = events.filter(event => isEventInCell(event, timeSlot, columnIndex, weekDates));
 
   // Check if there is at least one one-time event
   const hasOneOffEvent = eventsForCell.some(event => event.type === 'oneOff');
@@ -15,7 +16,7 @@ const WeekViewGridCell = ({ columnIndex, hour, events, weekDates, isEventInCell,
     return (
       <>
         {filteredEvents.map((event, index) => (
-          <EventBlock key={`event_${columnIndex}_${index}`} event={event} columnIndex={columnIndex} hour={hour} userId={userId}/>
+          <EventBlock key={`event_${columnIndex}_${index}`} event={event} columnIndex={columnIndex} timeSlot={timeSlot} userId={userId} onEventDeleted={onEventDeleted}/>
         ))}
       </>
     );
