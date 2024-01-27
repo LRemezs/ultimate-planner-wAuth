@@ -1,36 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import WeekViewGrid from './WeekViewGrid';
 import EventForm from '../one_off_events/EventForm'
-import { addWeeks, subWeeks } from 'date-fns';
+import { addWeeks, subWeeks, startOfWeek, endOfWeek } from 'date-fns';
+import { generateEventsBasedOnSubscriptions, transformSubscriptionsData } from '../routines/routinesHelpers';
 import EventService from '../../services/event';
+import SubscriptionService from '../../services/subscription';
 import '../../styles/WeekViewContainer.css';
 import '../../styles/Modal.css';
 
-
+ 
 const WeekViewContainer = ({ userId }) => {
+
     const [currentWeekStartDate, setCurrentWeekStartDate] = useState(new Date());
     const [events, setEvents] = useState([]);
     const [showEventForm, setShowEventForm] = useState(false); // State for controlling EventForm visibility
 
-    const startOfWeek = new Date(currentWeekStartDate);
-    startOfWeek.setHours(0, 0, 0, 0);
+    const startOfWeekDate = startOfWeek(currentWeekStartDate, { weekStartsOn: 1 });
+    startOfWeekDate.setHours(0, 0, 0, 0);
 
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(endOfWeek.getDate() + 7);
-    endOfWeek.setHours(0, 0, 0, 0);
+    const endOfWeekDate = endOfWeek(currentWeekStartDate, { weekStartsOn: 1 });
+    endOfWeekDate.setHours(0, 0, 0, 0);
 
-    const startDateString = startOfWeek.toISOString();
-    const endDateString = endOfWeek.toISOString();
+    const startDateString = startOfWeekDate.toISOString();
+    const endDateString = endOfWeekDate.toISOString();
 
+    
     useEffect(() => {
         if (userId) {
-            EventService.listEvents(userId, startDateString, endDateString)
-                .then(response => {
-                    setEvents(response.data.events);
-                })
-                .catch(err => console.error(err));
+            Promise.all([
+                EventService.listEvents(userId, startDateString, endDateString),
+                SubscriptionService.getUserSubscriptions(userId)
+            ])
+            .then(([eventsResponse, subscriptionsResponse]) => {
+                const databaseEvents = eventsResponse.data.events;
+                const userSubscriptions = transformSubscriptionsData(subscriptionsResponse.data.Subscriptions);
+
+                const generatedEvents = generateEventsBasedOnSubscriptions(userSubscriptions);
+                setEvents([...databaseEvents, ...generatedEvents]);
+            })
+            .catch(err => console.error(err));
         }
     }, [userId, currentWeekStartDate, startDateString, endDateString]);
+
 
     const handleNextWeek = () => {
         setCurrentWeekStartDate(prevStartDate => addWeeks(prevStartDate, 1));
