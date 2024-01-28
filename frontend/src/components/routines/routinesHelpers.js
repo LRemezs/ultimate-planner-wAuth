@@ -30,7 +30,6 @@ export const generateTimeSlotEvents = (startDate, endDate, eventTimings, name) =
       // Increment to the next day
       currentDate.setDate(currentDate.getDate() + 1);
   }
-
   return timeSlotEvents;
 };
 
@@ -55,19 +54,24 @@ export const transformSubscriptionsData = (subscriptionsData) => {
   const transformed = {};
 
   subscriptionsData.forEach(sub => {
-      if (!transformed[sub.name]) {
-          transformed[sub.name] = {
-              name: sub.name,
-              startDate: sub.start_date,
-              endDate: sub.end_date,
-              eventTimings: {}
-          };
-      }
-      transformed[sub.name].eventTimings[sub.day_of_week] = {
-          startTime: sub.start_time,
-          endTime: sub.end_time
+    // Use a combination of user_subscription_id and subscription_id as the unique key
+    const uniqueKey = `${sub.user_subscription_id}_${sub.subscription_id}`;
+
+    if (!transformed[uniqueKey]) {
+      transformed[uniqueKey] = {
+        subscriptionId: sub.subscription_id,
+        name: sub.s_name,
+        startDate: sub.start_date,
+        endDate: sub.end_date,
+        eventTimings: {}
       };
+    }
+    transformed[uniqueKey].eventTimings[sub.day_of_week] = {
+      startTime: sub.start_time,
+      endTime: sub.end_time
+    };
   });
 
   return transformed;
 }
+

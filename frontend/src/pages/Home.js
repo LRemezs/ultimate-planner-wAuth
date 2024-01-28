@@ -32,6 +32,13 @@ const Home = () => {
       .catch(err => console.log(err));
   };
 
+  const handleManageSubscriptionsClick = () => {
+    if (userId) {
+      navigate(`/manage-subscriptions/${userId}`);
+    } else {
+      console.error("User ID is undefined");
+    }
+  };
   
   return (
     <div>
@@ -40,6 +47,7 @@ const Home = () => {
           <div>
           <h3>You are authorized as {name}</h3>
           <button onClick={handleLogout}>Logout</button>
+          <button onClick={handleManageSubscriptionsClick}>Manage Subscriptions</button>
           </div>
           <WeekViewContainer userId={userId} />
         </div>

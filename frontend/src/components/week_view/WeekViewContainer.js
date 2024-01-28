@@ -13,7 +13,7 @@ const WeekViewContainer = ({ userId }) => {
 
     const [currentWeekStartDate, setCurrentWeekStartDate] = useState(new Date());
     const [events, setEvents] = useState([]);
-    const [showEventForm, setShowEventForm] = useState(false); // State for controlling EventForm visibility
+    const [showEventForm, setShowEventForm] = useState(false); 
 
     const startOfWeekDate = startOfWeek(currentWeekStartDate, { weekStartsOn: 1 });
     startOfWeekDate.setHours(0, 0, 0, 0);
@@ -37,10 +37,11 @@ const WeekViewContainer = ({ userId }) => {
 
                 const generatedEvents = generateEventsBasedOnSubscriptions(userSubscriptions);
                 setEvents([...databaseEvents, ...generatedEvents]);
+                
             })
             .catch(err => console.error(err));
         }
-    }, [userId, currentWeekStartDate, startDateString, endDateString]);
+    }, [userId, currentWeekStartDate, startDateString, endDateString,]);
 
 
     const handleNextWeek = () => {

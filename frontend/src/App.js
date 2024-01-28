@@ -4,7 +4,7 @@ import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Footer from './components/common/Footer';
-import EventDetailsPage from './components/common/EventDetailsPage';
+import SubscriptionManager from './pages/SubscriptionManager';
 
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
         <Route path='/' element={<Home />}></Route>
         <Route path='/register' element={<Register />}></Route>
         <Route path='/login' element={<Login />}></Route>
-        <Route path='/events/:eventId/user/:userId' element={<EventDetailsPage />}></Route>
+        <Route path='/manage-subscriptions/:userId' element={<SubscriptionManager />}></Route>
       </Routes>
       <Footer />
     </BrowserRouter>
