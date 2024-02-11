@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import SubscriptionService from '../../services/subscription';
 
 const NewSubscriptionModal = ({ subscriptionId, userId, onSave, onClose }) => {
     const displayDaysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];

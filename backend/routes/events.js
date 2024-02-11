@@ -22,7 +22,8 @@ router.post('/add', verifyUser, (req, res) => {
 router.get('/list', verifyUser, (req, res) => {
   const user_id = parseInt(req.query.user_id);
   const start_date = new Date(req.query.start_date); 
-  const end_date = new Date(req.query.end_date); 
+  let end_date = new Date(req.query.end_date);
+  end_date.setDate(end_date.getDate() + 1); 
   console.log(start_date, end_date);
 
   const sql = 'SELECT * FROM events WHERE user_id = ? AND start_time >= ? AND end_time <= ?';

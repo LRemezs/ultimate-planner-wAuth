@@ -1,4 +1,4 @@
-export const generateTimeSlotEvents = (startDate, endDate, eventTimings, name) => {
+export const generateTimeSlotEvents = (startDate, endDate, eventTimings, name, userId) => {
   const timeSlotEvents = [];
   let currentDate = new Date(startDate.getTime());
 
@@ -16,6 +16,7 @@ export const generateTimeSlotEvents = (startDate, endDate, eventTimings, name) =
           endEvent.setHours(parseInt(endTime[0]), parseInt(endTime[1]), 0);
 
           const event = {
+              user_id: userId,
               title: name,
               start_time: startEvent.toISOString(), // Convert to ISO string format
               end_time: endEvent.toISOString(), 
@@ -33,18 +34,21 @@ export const generateTimeSlotEvents = (startDate, endDate, eventTimings, name) =
   return timeSlotEvents;
 };
 
-export const generateEventsBasedOnSubscriptions = (userSubscriptions) => {
+export const generateEventsBasedOnSubscriptions = (userSubscriptions, startOfWeekDate, endOfWeekDate, userId) => {
   let allGeneratedEvents = [];
 
   for (const [, config] of Object.entries(userSubscriptions)) {
-      const { startDate, endDate, eventTimings, name } = config;
+    const { startDate, endDate, eventTimings, name } = config;
 
-      // Convert startDate and endDate to Date objects if necessary
-      const start = new Date(startDate);
-      const end = new Date(endDate);
+    // Ensure we're only generating events within the current week view
+    const effectiveStartDate = new Date(Math.max(new Date(startDate).getTime(), startOfWeekDate.getTime()));
+    const effectiveEndDate = new Date(Math.min(new Date(endDate).getTime(), endOfWeekDate.getTime()));
 
-      const generatedEvents = generateTimeSlotEvents(start, end, eventTimings, name);
+    // If the subscription period overlaps with the current week
+    if (effectiveStartDate <= effectiveEndDate) {
+      const generatedEvents = generateTimeSlotEvents(effectiveStartDate, effectiveEndDate, eventTimings, name, userId);
       allGeneratedEvents = allGeneratedEvents.concat(generatedEvents);
+    }
   }
 
   return allGeneratedEvents;

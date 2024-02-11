@@ -1,7 +1,10 @@
+
 import React from "react";
+import OneOffEventContent from "../event_content/OneOffEventContent";
+import RepeatingEventContent from "../event_content/RepeatingEventContent";
+import REntryContent from "../event_content/REntryContent";
 
-
-const EventBlock = ({ event, columnIndex, timeSlot, onEventDeleted }) => {
+const EventBlock = ({ event, columnIndex, timeSlot, refreshEvents }) => {
   const eventStartTime = new Date(event.start_time);
   const eventEndTime = new Date(event.end_time);
 
@@ -9,30 +12,24 @@ const EventBlock = ({ event, columnIndex, timeSlot, onEventDeleted }) => {
   const durationMinutes = (eventEndTime - eventStartTime) / (1000 * 60);
   const rowSpan = Math.ceil(durationMinutes / 15);
 
-
-  const formatTime = (time) => {
-    return new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: 'numeric', hour12: false }).format(new Date(time));
+  // Determine which component to render based on event.type
+  const renderEventContent = () => {
+    switch (event.type) {
+      case 'oneOff':
+        return <OneOffEventContent event={event} refreshEvents={refreshEvents} />;
+      case 'repeating':
+        return <RepeatingEventContent event={event} refreshEvents={refreshEvents}/>;
+      case 'rEntry':
+        return <REntryContent event={event} refreshEvents={refreshEvents}/>;
+      default:
+        return null; // Or some default content
+    }
   };
-
 
   if (isStartingCell) {
     return (
       <td key={`${columnIndex}`} rowSpan={rowSpan} style={{ position: 'relative' }}>
-        <div>
-          <strong>{event.title}</strong>
-          <br />
-          {formatTime(event.start_time)}
-          <br />
-          {event.description && <span>{event.description}</span>}
-          <br />
-          {event.location && <span>{event.location}</span>}
-        </div>
-        <span 
-          style={{ position: 'absolute', top: 0, right: 0, cursor: 'pointer' }} 
-          onClick={() => onEventDeleted(event.event_id)}
-        >
-          X
-        </span>
+        {renderEventContent()}
       </td>
     );
   } else {

@@ -18,7 +18,7 @@ router.get('/listSubscriptions', verifyUser, (req, res) => {
     if (err) {
       return res.status(500).json({ Error: "Error fetching subscriptions", Details: err.message });
     }
-    return res.json({ Status: "Success", Subscriptions: results });
+    return res.json({ Status: "Success", subscriptions: results });
   });
 });
 
@@ -90,6 +90,7 @@ router.put('/updateDetails/:userSubscriptionId', verifyUser, (req, res) => {
                 return reject(err);
               }
               resolve(result);
+              console.log('Updated timings:', result);
             });
           });
         });

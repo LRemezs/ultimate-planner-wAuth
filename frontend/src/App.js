@@ -5,6 +5,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import Footer from './components/common/Footer';
 import SubscriptionManager from './pages/SubscriptionManager';
+import Profile from './pages/Profile';
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Route path='/register' element={<Register />}></Route>
         <Route path='/login' element={<Login />}></Route>
         <Route path='/manage-subscriptions/:userId' element={<SubscriptionManager />}></Route>
+        <Route path='/profile/:userId' element={<Profile />}></Route>
       </Routes>
       <Footer />
     </BrowserRouter>

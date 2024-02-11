@@ -4,7 +4,7 @@ import WeekViewGridBody from './WeekViewGridBody';
 import { generateWeekDates } from '../one_off_events/dateHelpers';
 import '../../styles/WeekViewGrid.css';
 
-const WeekViewGrid = ({ startDate, events, userId, onEventDeleted }) => {
+const WeekViewGrid = ({ startDate, events, userId, refreshEvents }) => {
   const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
   // Create an array of 15-minute intervals for each hour
@@ -17,7 +17,7 @@ const WeekViewGrid = ({ startDate, events, userId, onEventDeleted }) => {
   return (
     <table className="week-grid">
       <WeekViewGridHeader daysOfWeek={daysOfWeek} startDate={startDate} />
-      <WeekViewGridBody hoursOfDay={hoursOfDay} weekDates={generateWeekDates(startDate)} events={events} userId={userId} onEventDeleted={onEventDeleted}/>
+      <WeekViewGridBody hoursOfDay={hoursOfDay} weekDates={generateWeekDates(startDate)} events={events} userId={userId} refreshEvents={refreshEvents}/>
     </table>
   );
 };

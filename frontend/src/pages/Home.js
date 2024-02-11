@@ -16,7 +16,7 @@ const Home = () => {
         if (res.data.Status === "Success") {
           setAuth(true);
           setName(res.data.name);
-          setUserId(res.data.id); // Make sure this line correctly sets the ID
+          setUserId(res.data.id); 
         } else {
           setAuth(false);
         }
@@ -39,6 +39,14 @@ const Home = () => {
       console.error("User ID is undefined");
     }
   };
+
+  const handleProfileClick = () => {
+    if (userId) {
+      navigate(`/profile/${userId}`);
+    } else {
+      console.error("User ID is undefined")
+    }
+  }
   
   return (
     <div>
@@ -48,6 +56,7 @@ const Home = () => {
           <h3>You are authorized as {name}</h3>
           <button onClick={handleLogout}>Logout</button>
           <button onClick={handleManageSubscriptionsClick}>Manage Subscriptions</button>
+          <button onClick={handleProfileClick}>View Profile</button>
           </div>
           <WeekViewContainer userId={userId} />
         </div>

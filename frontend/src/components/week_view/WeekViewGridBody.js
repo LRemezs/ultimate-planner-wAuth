@@ -2,7 +2,7 @@ import React from "react";
 import WeekViewGridCell from './WeekViewGridCell';
 import { isEventInCell } from '../one_off_events/dateHelpers';
 
-const WeekViewGridBody = ({ hoursOfDay, weekDates, events, userId, onEventDeleted }) => {
+const WeekViewGridBody = ({ hoursOfDay, weekDates, events, userId, refreshEvents }) => {
   
   // Function to check if there are events for a given time slot
   const hasEventsInTimeSlot = (timeSlot) => {
@@ -32,7 +32,7 @@ const WeekViewGridBody = ({ hoursOfDay, weekDates, events, userId, onEventDelete
                   events={events}
                   isEventInCell={(event) => isEventInCell(event, timeSlot, columnIndex, weekDates)}
                   userId={userId}
-                  onEventDeleted={onEventDeleted}
+                  refreshEvents={refreshEvents}
                 />
               ))}
             </tr>
