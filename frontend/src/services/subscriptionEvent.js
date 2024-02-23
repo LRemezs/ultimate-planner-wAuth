@@ -15,6 +15,28 @@ const SubscriptionEventService = {
     api.delete(`${API_BASE_URL}/deleteRunningData/${r_entry_id}`),
   createRunningEvent: (data) =>
     api.post(`${API_BASE_URL}/createRunningEvent`, data),
+
+   // Services for "Gym" subscription
+  listWorkoutTypes: (userId) =>
+    api.get(`${API_BASE_URL}/workoutTypes/${userId}`),
+  addWorkoutType: (data) =>
+    api.post(`${API_BASE_URL}/workoutTypes`, data),
+  deleteWorkoutType: (workoutTypeId) =>
+    api.delete(`${API_BASE_URL}/workoutTypes/${workoutTypeId}`),
+  listExercises: (workoutTypeId) =>
+    api.get(`${API_BASE_URL}/exercises/${workoutTypeId}`),
+  addExercise: (data) =>
+    api.post(`${API_BASE_URL}/exercises/add`, data),
+  deleteExercise: (exerciseId) =>
+    api.delete(`${API_BASE_URL}/exercises/delete/${exerciseId}`),
+  createGymEvent: (data) =>
+    api.post(`${API_BASE_URL}/createGymEvent`, data),
+  getGymEvent: (rEntryId) =>
+    api.get(`${API_BASE_URL}/gymEvent/${rEntryId}`),
+  replaceWorkoutData: (rEntryId, updatedWorkoutData) => 
+    api.put(`${API_BASE_URL}/replaceWorkoutData/${rEntryId}`, updatedWorkoutData),
+  deleteGymEvent: (rEntryId) =>
+    api.delete(`${API_BASE_URL}/deleteGymEvent/${rEntryId}`),
 } 
 
 export default SubscriptionEventService;

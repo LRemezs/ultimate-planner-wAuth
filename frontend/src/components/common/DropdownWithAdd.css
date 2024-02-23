@@ -1,0 +1,49 @@
+.dropdownWithAdd {
+  position: relative;
+  width: 200px; /* Adjust based on your design */
+}
+
+.dropdownToggle {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #fff;
+}
+
+.dropdownList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #ccc;
+  background-color: #aaa;
+  border-radius: 4px;
+  max-height: 200px; /* Adjust based on your design */
+  overflow-y: auto;
+  position: absolute;
+  width: 100%;
+  z-index: 10000; /* Ensure it's above other content */
+}
+
+.dropdownItem {
+  padding: 10px;
+  cursor: pointer;
+  width: 90%; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dropdownItem span {
+  flex-grow: 1; 
+}
+
+.dropdownItem:hover {
+  background-color: #f2f2f2;
+}
+
+.deleteButton {
+  cursor: pointer;
+  border: none;
+  background: none;
+}

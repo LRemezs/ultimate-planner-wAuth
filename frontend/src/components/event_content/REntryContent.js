@@ -1,6 +1,6 @@
 import React from "react";
-import RunningEntryContent from "./subsciption_entry_content/Running";
-import WorkContent from "./subscription_content/Work";
+import RunningEntryContent from "./subsciption_entry_content/RunningREntry";
+import GymREntry from "./subsciption_entry_content/GymREntry/GymREntry";
 
 const REntryContent = ({ event, refreshEvents }) => {
   // Render the appropriate component based on the event title or another property
@@ -8,8 +8,8 @@ const REntryContent = ({ event, refreshEvents }) => {
     switch (event.title) {
       case "Running":
         return <RunningEntryContent event={event} refreshEvents={refreshEvents}/>;
-      case "Work":
-        return <WorkContent event={event} />;
+      case "Gym Workout":
+        return <GymREntry event={event} refreshEvents={refreshEvents} />;
       default:
         return <div>Default Repeating Event Content</div>; // Fallback content
     }
